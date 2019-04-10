@@ -16,11 +16,13 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4" id="date_heureContent">
+                </div>
+                <div class="col-md-4">
                     <libelle>Quel temps fait-il ?</libelle>
                     <input type="text" id="city"> <button id="weatherBtn">OK</button>
                 </div>
-                <div class="col-md-6" id="meteo">
+                <div class="col-md-4" id="meteo">
                 </div>
             
             <div class="col-md-12">
@@ -223,6 +225,10 @@
     <script id="recupererFormateursDepuisJs" type="x-tmpl-mustache">
         <option value="{{id}}">{{nomF}}</option>        
     </script>
+     <!--template date et heure--> 
+     <script id="recupererDateHeureDepuisJs" type="x-tmpl-mustache">
+          <div> {{dateEtHeure}} </div>;        
+        </script>
 
 
 

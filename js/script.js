@@ -144,23 +144,6 @@ for (i=0 ; i < raisons.length; i++) {
     $("#listRaisonsContent").append(html);
 }
 
-/*// Selection d'un élève
-$("select[name='listeEleves']").change( function() // lorsqu'un nouvel élève est sélectionné
-{    
-       alert($("select[name='listeEleves'] > option:selected").val());
-});
-
-// Selection d'une raison
-$("select[name='listeRaisons']").change( function() // lorsqu'une nouvelle raison est sélectionnée
-{    
-       alert($("select[name='listeRaisons'] > option:selected").val());
-});
-
-// Selection d'un formateur
-$("select[name='listeFormateurs']").change( function() // lorsqu'un nouveau formateur est sélectionné
-{    
-       alert($("select[name='listeFormateurs'] > option:selected").val());
-});*/
 
 
 // Générateur N°Ticket
@@ -208,7 +191,13 @@ $("#genererTicket").click(function afficherObjet() {
     var template = "<tr><td><button type=\"button\" class=\"deletebtn\">DEL</button></td></tr>";
     var action = Mustache.render(template, objet);
     //créer un listener de click
+    $("#genererTicket").on("click", function() {
+        console.log("Vous avez généré un ticket!!");
+    })
+
     //l'attaché à l"élément qu'on est en train de créé
+
+
     //appen au DOM principal
     $("#actionContent").append(action);
     
@@ -223,52 +212,11 @@ $("#genererTicket").click(function afficherObjet() {
 });
 
 
-/*
-// Exécute un appel AJAX GET
-// Prend en paramètres l'URL cible et la fonction callback appelée en cas de succès
-function ajaxGet(url, callback) {
-    var req = new XMLHttpRequest();
-    req.open("GET", url);
-    req.addEventListener("load", function () {
-        if (req.status >= 200 && req.status < 400) {
-            // Appelle la fonction callback en lui passant la réponse de la requête
-            callback(req.responseText);
-        } else {
-            console.error(req.status + " " + req.statusText + " " + url);
-        }
-    });
-    req.addEventListener("error", function () {
-        console.error("Erreur réseau avec l'URL " + url);
-    });
-    req.send(null);
-}
 
-var ville = $("#city").val();
-console.log(ville);
-// Accès à la météo 
-ajaxGet("https://www.prevision-meteo.ch/services/json/Lyon", function (reponse) {
-    
-    var meteo = JSON.parse(reponse);
-    // Récupération de certains résultats
-    var city = meteo.city_info.name
-    var temperature = meteo.current_condition.tmp;
-    var condition = meteo.current_condition.condition;
-    
-    // Affichage des résultats
-    var conditionsElt = document.createElement("div");
-    conditionsElt.textContent = "A " + city + ", il fait actuellement " + temperature +
-        "°C et le temps est " + condition;
-    var meteoElt = document.getElementById("meteo");
-    meteoElt.appendChild(conditionsElt);     
-});*/
-
-
-
+// Appel Ajax de la météo
 $("#weatherBtn").click(function () {
-
     var wantedCity = $("#city").val();
      const url = "https://www.prevision-meteo.ch/services/json/"+wantedCity;
-        
      $.ajax({
          "url": url,
          "type": "GET",
@@ -282,6 +230,44 @@ $("#weatherBtn").click(function () {
          }, error:function(error) {
              console.log("Error:" + error);
          }
-     });
-                    
+     });                  
  });
+
+
+ // Appel Ajax de la date et heure du moment
+
+ function date_heure() {
+    date = new Date;
+    annee = date.getFullYear();
+    moi = date.getMonth();
+    mois = new Array('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre')
+    j = date.getDate();
+    jour = date.getDay();
+    jours = new Array('Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche')
+    h = date.getHours();
+    if(h < 10) {
+        h = "0" + h;
+    }
+    m = date.getMinutes();
+    if(m < 10) {
+        m = "0" + m;
+    }
+    s = date.getSeconds();
+    if(s < 10) {
+        s = "0" + s;
+    }
+    resultat = 'Nous sommes le ' + jours[jour] + ' ' + j + ' ' + mois[moi] + ' ' + annee + ' il est ' + h + ':' + m + ':' + s;
+    //$("id").html = resultat;
+    return resultat;
+
+   // setTimeout('date_heure("' + id + '");', '1000');
+}
+
+var dateHeure = date_heure();
+var objet = {
+    "dateEtHeure" : dateHeure,
+}
+var template = "<div> {{dateEtHeure}} </div>"; 
+var html = Mustache.render(template, objet);
+console.log(html);
+$("#date_heureContent").append(html);
